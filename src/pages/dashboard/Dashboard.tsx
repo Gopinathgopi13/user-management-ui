@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useSocket } from "../../context/SocketContext";
 import {
   TeamOutlined,
   UserAddOutlined,
@@ -29,9 +30,22 @@ function Dashboard() {
     total: 0,
   });
 
+  const { socket } = useSocket();
+
   useEffect(() => {
     handleFetchStats();
   }, []);
+
+  useEffect(() => {
+    if (!socket) return;
+    const handler = () => {
+      handleFetchStats();
+      handleFetchUsers(1, pagination.size);
+      setPagination((prev) => ({ ...prev, page: 1 }));
+    };
+    socket.on("user:created", handler);
+    return () => { socket.off("user:created", handler); };
+  }, [socket, pagination.size]);
 
   useEffect(() => {
     handleFetchUsers(pagination.page, pagination.size);

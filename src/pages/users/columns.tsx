@@ -6,7 +6,9 @@ export const columns: (
   handleView: (user: User) => void,
   handleEdit: (user: User) => void,
   handleDelete: (user: User) => void,
-) => TableColumnType<User>[] = (handleView, handleEdit, handleDelete) => [
+  canEdit?: boolean,
+  canDelete?: boolean,
+) => TableColumnType<User>[] = (handleView, handleEdit, handleDelete, canEdit = true, canDelete = true) => [
   {
     title: "S.No",
     key: "sno",
@@ -87,24 +89,28 @@ export const columns: (
             onClick={() => handleView(record)}
           />
         </Tooltip>
-        <Tooltip title="Edit">
-          <Button
-            type="text"
-            size="small"
-            icon={<EditOutlined />}
-            className="text-text-secondary hover:text-primary"
-            onClick={() => handleEdit(record)}
-          />
-        </Tooltip>
-        <Tooltip title="Delete">
-          <Button
-            type="text"
-            size="small"
-            icon={<DeleteOutlined />}
-            className="text-text-secondary hover:text-error"
-            onClick={() => handleDelete(record)}
-          />
-        </Tooltip>
+        {canEdit && (
+          <Tooltip title="Edit">
+            <Button
+              type="text"
+              size="small"
+              icon={<EditOutlined />}
+              className="text-text-secondary hover:text-primary"
+              onClick={() => handleEdit(record)}
+            />
+          </Tooltip>
+        )}
+        {canDelete && (
+          <Tooltip title="Delete">
+            <Button
+              type="text"
+              size="small"
+              icon={<DeleteOutlined />}
+              className="text-text-secondary hover:text-error"
+              onClick={() => handleDelete(record)}
+            />
+          </Tooltip>
+        )}
       </div>
     ),
   },

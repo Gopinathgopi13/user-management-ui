@@ -38,10 +38,6 @@ export const router = createBrowserRouter([
             path: "/roles",
             element: <RoleManagement />,
           },
-          {
-            path: "/profile",
-            element: <div>Settings</div>,
-          },
         ],
       },
     ],

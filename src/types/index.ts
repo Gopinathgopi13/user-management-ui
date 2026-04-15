@@ -27,3 +27,9 @@ export interface UserFormProps {
   onSuccess: () => void;
   onClose: () => void;
 }
+
+export interface RoleFormProps {
+  role?: UserRole | null;
+  onSuccess: () => void;
+  onClose: () => void;
+}

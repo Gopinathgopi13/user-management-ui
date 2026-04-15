@@ -25,9 +25,9 @@ function UserForm({ roles, user, onSuccess, onClose }: UserFormProps) {
         message.error(res.data.message || "Failed to create user");
       }
     } catch (error: any) {
-      message.error(
-        error?.response?.data?.message || "Failed to create user",
-      );
+      message.error(error?.response?.data?.message || "Failed to create user");
+    } finally {
+      resetForm();
     }
   };
 
@@ -46,9 +46,9 @@ function UserForm({ roles, user, onSuccess, onClose }: UserFormProps) {
         message.error(res.data.message || "Failed to update user");
       }
     } catch (error: any) {
-      message.error(
-        error?.response?.data?.message || "Failed to update user",
-      );
+      message.error(error?.response?.data?.message || "Failed to update user");
+    } finally {
+      resetForm();
     }
   };
 
@@ -62,6 +62,7 @@ function UserForm({ roles, user, onSuccess, onClose }: UserFormProps) {
     setFieldValue,
     setFieldTouched,
     isSubmitting,
+    resetForm,
   } = useFormik({
     initialValues: isEdit
       ? { name: user.name, role_id: user.role_id, status: user.status }

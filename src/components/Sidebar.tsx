@@ -3,17 +3,22 @@ import {
   DashboardOutlined,
   TeamOutlined,
   SafetyOutlined,
-  UserOutlined,
 } from "@ant-design/icons";
+import { useAuth } from "../hooks/useAuth";
 
 const navItems = [
-  { label: "Dashboard", icon: <DashboardOutlined />, path: "/dashboard" },
-  { label: "Users", icon: <TeamOutlined />, path: "/users" },
-  { label: "Roles", icon: <SafetyOutlined />, path: "/roles" },
-  { label: "Profile", icon: <UserOutlined />, path: "/profile" },
+  { label: "Dashboard", icon: <DashboardOutlined />, path: "/dashboard", resource: null, action: null },
+  { label: "Users", icon: <TeamOutlined />, path: "/users", resource: "users", action: "read" },
+  { label: "Roles", icon: <SafetyOutlined />, path: "/roles", resource: "roles", action: "read" },
 ];
 
 function Sidebar() {
+  const { hasPermission } = useAuth();
+
+  const visibleItems = navItems.filter(
+    (item) => !item.resource || hasPermission(item.resource, item.action!),
+  );
+
   return (
     <aside className="flex flex-col w-60 min-h-screen bg-[#0f172a] text-white shrink-0">
       <div className="flex items-center gap-2 px-6 py-5 border-b border-white/10">
@@ -21,12 +26,12 @@ function Sidebar() {
           A
         </div>
         <span className="text-base font-semibold tracking-wide">
-          AdminPanel
+          Admin Panel
         </span>
       </div>
 
       <nav className="flex-1 px-3 py-4 space-y-1">
-        {navItems.map(({ label, icon, path }) => (
+        {visibleItems.map(({ label, icon, path }) => (
           <NavLink
             key={path}
             to={path}

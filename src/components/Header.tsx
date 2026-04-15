@@ -10,6 +10,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { logoutService } from "../services/api/auth.api";
 import { clearAuthSession, getCookie } from "../utilities/auth";
 import { REFRESH_TOKEN } from "../utilities/constant";
+import { useAuth } from "../hooks/useAuth";
 import { useState } from "react";
 import Spinner from "./Spinner";
 
@@ -25,6 +26,7 @@ function Header() {
   const navigate = useNavigate();
   const page = routeTitles[pathname];
   const [loading, setLoading] = useState(false);
+  const { user } = useAuth();
 
   const handleLogout = async () => {
     const refreshToken = getCookie(REFRESH_TOKEN) ?? "";
@@ -87,9 +89,11 @@ function Header() {
               </div>
               <div className="leading-tight">
                 <p className="text-sm font-medium text-text-primary">
-                  Admin User
+                  {user?.name ?? "User"}
                 </p>
-                <p className="text-xs text-text-secondary">Admin</p>
+                <p className="text-xs text-text-secondary capitalize">
+                  {user?.role?.name ?? ""}
+                </p>
               </div>
               <DownOutlined className="text-xs text-text-secondary ml-1" />
             </div>

@@ -58,3 +58,7 @@ export interface UpdateUserPayload {
 export const updateUser = (id: string, payload: UpdateUserPayload) => {
   return instance.put(`/users/${id}`, payload);
 };
+
+export const deleteUser = (id: string) => {
+  return instance.delete(`/users/${id}`);
+};

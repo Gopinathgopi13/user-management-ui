@@ -51,6 +51,15 @@ function UserDetailModal({ user, onClose }: UserDetailModalProps) {
     },
   ];
 
+  const permissions = user.role?.permissions ?? {};
+  const permissionEntries = Object.entries(permissions);
+
+  const actionColors: Record<string, string> = {
+    read: "green",
+    write: "blue",
+    delete: "red",
+  };
+
   return (
     <AppModal open={!!user} title="User Details" onClose={onClose}>
       <div className="divide-y divide-border-subtle">
@@ -62,6 +71,32 @@ function UserDetailModal({ user, onClose }: UserDetailModalProps) {
             <span className="text-sm text-text-primary">{value}</span>
           </div>
         ))}
+
+        {permissionEntries.length > 0 && (
+          <div className="py-3 gap-4">
+            <span className="text-sm text-text-secondary">Permissions</span>
+            <div className="mt-2 space-y-2">
+              {permissionEntries.map(([resource, actions]) => (
+                <div key={resource} className="flex items-center gap-3">
+                  <span className="w-20 shrink-0 text-sm capitalize text-text-primary font-medium">
+                    {resource}
+                  </span>
+                  <div className="flex gap-1 flex-wrap">
+                    {(actions as string[]).map((action) => (
+                      <Tag
+                        key={action}
+                        color={actionColors[action] ?? "default"}
+                        className="capitalize rounded-md"
+                      >
+                        {action}
+                      </Tag>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </AppModal>
   );

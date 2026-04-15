@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Button, Select, message } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
+import { Button, Modal, Select, message, notification } from "antd";
+import { PlusOutlined, UserAddOutlined } from "@ant-design/icons";
 import SearchInput from "../../components/SearchInput";
 import CustomTable from "../../components/CustomTable";
 import Spinner from "../../components/Spinner";
@@ -9,8 +9,10 @@ import UserForm from "./UserForm";
 import UserDetailModal from "./UserDetailModal";
 import type { User, UserRole } from "../../types";
 import { columns } from "./columns";
-import { getUsers } from "../../services/api/users.api";
+import { getUsers, deleteUser } from "../../services/api/users.api";
 import { getRoles } from "../../services/api/roles.api";
+import { useAuth } from "../../hooks/useAuth";
+import { useSocket } from "../../context/SocketContext";
 
 function UserManagement() {
   const [users, setUsers] = useState<User[]>([]);
@@ -22,6 +24,15 @@ function UserManagement() {
   const [createModal, setCreateModal] = useState(false);
   const [editUser, setEditUser] = useState<User | null>(null);
   const [viewUser, setViewUser] = useState<User | null>(null);
+  const [deleteTarget, setDeleteTarget] = useState<User | null>(null);
+  const [deleting, setDeleting] = useState(false);
+
+  const { hasPermission } = useAuth();
+  const canWrite = hasPermission("users", "write");
+  const canDelete = hasPermission("users", "delete");
+
+  const { socket } = useSocket();
+  const [notifApi, notifContextHolder] = notification.useNotification();
 
   const searchTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const pendingSearch = useRef(search);
@@ -69,6 +80,23 @@ function UserManagement() {
     [],
   );
 
+  useEffect(() => {
+    if (!socket) return;
+    const handler = (user: User) => {
+      notifApi.info({
+        message: "New User Created",
+        description: `${user.name} (${user.email}) has been added.`,
+        icon: <UserAddOutlined style={{ color: "#6366f1" }} />,
+        placement: "topRight",
+        duration: 5,
+      });
+      setPagination((prev) => ({ ...prev, page: 1 }));
+      fetchUsers(1, pagination.size, search, roleId);
+    };
+    socket.on("user:created", handler);
+    return () => { socket.off("user:created", handler); };
+  }, [socket, notifApi, pagination.size, search, roleId, fetchUsers]);
+
   const handleSearch = (value: string) => {
     pendingSearch.current = value;
     if (searchTimer.current) clearTimeout(searchTimer.current);
@@ -85,7 +113,22 @@ function UserManagement() {
 
   const handleView = (user: User) => setViewUser(user);
   const handleEdit = (user: User) => setEditUser(user);
-  const handleDelete = (user: User) => console.log("Delete", user);
+  const handleDeleteClick = (user: User) => setDeleteTarget(user);
+
+  const handleDeleteConfirm = async () => {
+    if (!deleteTarget) return;
+    setDeleting(true);
+    try {
+      await deleteUser(deleteTarget.id);
+      message.success("User deleted successfully");
+      setDeleteTarget(null);
+      fetchUsers(pagination.page, pagination.size, search, roleId);
+    } catch (error: any) {
+      message.error(error?.response?.data?.message || "Failed to delete user");
+    } finally {
+      setDeleting(false);
+    }
+  };
 
   const handleCreateSuccess = () => {
     if (pagination.page === 1) {
@@ -101,6 +144,7 @@ function UserManagement() {
 
   return (
     <div className="space-y-4">
+      {notifContextHolder}
       {loading && <Spinner isLoading={loading} />}
 
       <div className="flex items-center justify-between gap-3">
@@ -120,16 +164,30 @@ function UserManagement() {
           />
         </div>
 
-        <Button
-          type="primary"
-          icon={<PlusOutlined />}
-          className="bg-primary"
-          onClick={() => setCreateModal(true)}
-        >
-          Create User
-        </Button>
+        {canWrite && (
+          <Button
+            type="primary"
+            icon={<PlusOutlined />}
+            className="bg-primary"
+            onClick={() => setCreateModal(true)}
+          >
+            Create User
+          </Button>
+        )}
       </div>
 
+      <div className="bg-white rounded-xl border border-border-subtle shadow-sm p-4">
+        <CustomTable<User>
+          columns={columns(handleView, handleEdit, handleDeleteClick, canWrite, canDelete)}
+          dataSource={users}
+          rowKey="id"
+          total={pagination.total}
+          pageSize={pagination.size}
+          currentPage={pagination.page}
+          onPageChange={(page) => setPagination((prev) => ({ ...prev, page }))}
+        />
+      </div>
+      
       <AppModal
         open={createModal}
         title="Create User"
@@ -148,6 +206,7 @@ function UserManagement() {
         onClose={() => setEditUser(null)}
       >
         <UserForm
+          key={editUser?.id}
           roles={roles}
           user={editUser}
           onClose={() => setEditUser(null)}
@@ -157,17 +216,34 @@ function UserManagement() {
 
       <UserDetailModal user={viewUser} onClose={() => setViewUser(null)} />
 
-      <div className="bg-white rounded-xl border border-border-subtle shadow-sm p-4">
-        <CustomTable<User>
-          columns={columns(handleView, handleEdit, handleDelete)}
-          dataSource={users}
-          rowKey="id"
-          total={pagination.total}
-          pageSize={pagination.size}
-          currentPage={pagination.page}
-          onPageChange={(page) => setPagination((prev) => ({ ...prev, page }))}
-        />
-      </div>
+      <Modal
+        centered
+        open={!!deleteTarget}
+        title="Delete User"
+        onCancel={() => setDeleteTarget(null)}
+        footer={[
+          <Button key="cancel" onClick={() => setDeleteTarget(null)}>
+            Cancel
+          </Button>,
+          <Button
+            key="confirm"
+            danger
+            type="primary"
+            loading={deleting}
+            onClick={handleDeleteConfirm}
+          >
+            Delete
+          </Button>,
+        ]}
+      >
+        <p className="text-text-secondary">
+          Are you sure you want to delete{" "}
+          <span className="font-medium text-text-primary">
+            {deleteTarget?.name}
+          </span>
+          ? This action cannot be undone.
+        </p>
+      </Modal>
     </div>
   );
 }

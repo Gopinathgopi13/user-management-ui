@@ -26,3 +26,31 @@ export const updateUserSchema = Yup.object({
   role_id: Yup.string().required("Role is required"),
   status: Yup.string().oneOf(["active", "inactive"]).required("Status is required"),
 });
+
+export const createRoleSchema = Yup.object({
+  name: Yup.string().required("Role name is required"),
+  permissions: Yup.array()
+    .of(
+      Yup.object({
+        resource: Yup.string().required("Resource name is required"),
+        actions: Yup.array()
+          .of(Yup.string())
+          .min(1, "Select at least one action"),
+      }),
+    )
+    .min(1, "Add at least one permission"),
+});
+
+export const updateRoleSchema = Yup.object({
+  name: Yup.string().required("Role name is required"),
+  permissions: Yup.array()
+    .of(
+      Yup.object({
+        resource: Yup.string().required("Resource name is required"),
+        actions: Yup.array()
+          .of(Yup.string())
+          .min(1, "Select at least one action"),
+      }),
+    )
+    .min(1, "Add at least one permission"),
+});
