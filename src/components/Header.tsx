@@ -1,10 +1,5 @@
-import {
-  BellOutlined,
-  DownOutlined,
-  LogoutOutlined,
-  UserOutlined,
-} from "@ant-design/icons";
-import { Badge, Dropdown, message } from "antd";
+import { DownOutlined, LogoutOutlined, UserOutlined } from "@ant-design/icons";
+import { Dropdown, message } from "antd";
 import type { MenuProps } from "antd";
 import { useLocation, useNavigate } from "react-router-dom";
 import { logoutService } from "../services/api/auth.api";
