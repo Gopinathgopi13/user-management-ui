@@ -4,14 +4,8 @@ import { PlusOutlined, DeleteOutlined } from "@ant-design/icons";
 import CommonInput from "../../components/CommonInput";
 import { createRole, updateRole } from "../../services/api/roles.api";
 import { createRoleSchema, updateRoleSchema } from "../../utilities/schema";
-import type { RoleFormProps } from "../../types";
-
-const AVAILABLE_ACTIONS = ["read", "write", "delete"];
-
-interface PermissionRow {
-  resource: string;
-  actions: string[];
-}
+import type { PermissionRow, RoleFormProps } from "../../types";
+import { AVAILABLE_ACTIONS } from "../../utilities/constant";
 
 function permissionsToRows(
   permissions: Record<string, string[]>,
@@ -22,9 +16,7 @@ function permissionsToRows(
   }));
 }
 
-function rowsToPermissions(
-  rows: PermissionRow[],
-): Record<string, string[]> {
+function rowsToPermissions(rows: PermissionRow[]): Record<string, string[]> {
   return rows.reduce(
     (acc, row) => {
       if (row.resource) acc[row.resource] = row.actions;
@@ -58,9 +50,7 @@ function RoleForm({ role, onSuccess, onClose }: RoleFormProps) {
         message.error(res.data.message || "Failed to create role");
       }
     } catch (error: any) {
-      message.error(
-        error?.response?.data?.message || "Failed to create role",
-      );
+      message.error(error?.response?.data?.message || "Failed to create role");
     }
   };
 
@@ -81,9 +71,7 @@ function RoleForm({ role, onSuccess, onClose }: RoleFormProps) {
         message.error(res.data.message || "Failed to update role");
       }
     } catch (error: any) {
-      message.error(
-        error?.response?.data?.message || "Failed to update role",
-      );
+      message.error(error?.response?.data?.message || "Failed to update role");
     }
   };
 
@@ -197,9 +185,7 @@ function RoleForm({ role, onSuccess, onClose }: RoleFormProps) {
                         handleResourceChange(index, e.target.value)
                       }
                       onBlur={handleBlur}
-                      error={
-                        rowError?.resource ? rowError.resource : undefined
-                      }
+                      error={rowError?.resource ? rowError.resource : undefined}
                     />
                   </div>
                   {values.permissions.length > 1 && (

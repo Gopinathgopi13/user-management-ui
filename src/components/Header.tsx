@@ -18,7 +18,6 @@ const routeTitles: Record<string, { title: string; description: string }> = {
   "/dashboard": { title: "Dashboard", description: "" },
   "/users": { title: "Users", description: "Manage users" },
   "/roles": { title: "Roles", description: "Manage roles" },
-  "/profile": { title: "Profile", description: "View and edit your profile" },
 };
 
 function Header() {
@@ -68,16 +67,7 @@ function Header() {
           <p className="text-sm text-text-secondary">{page?.description}</p>
         </div>
 
-        {/* Right side */}
         <div className="flex items-center gap-4">
-          {/* Notification bell */}
-          <Badge count={3} size="small">
-            <button className="flex items-center justify-center w-9 h-9 rounded-full hover:bg-surface transition-colors cursor-pointer text-text-secondary">
-              <BellOutlined className="text-lg" />
-            </button>
-          </Badge>
-
-          {/* User dropdown */}
           <Dropdown
             menu={{ items: userMenuItems }}
             trigger={["click"]}

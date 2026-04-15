@@ -1,18 +1,13 @@
-import React from 'react';
-import { Input, type InputProps } from 'antd';
+import React from "react";
+import { Input } from "antd";
+import type { CommonInputProps } from "../types";
 
-interface CommonInputProps extends InputProps {
-  label?: string;
-  error?: string;
-  isPassword?: boolean;
-}
-
-const CommonInput: React.FC<CommonInputProps> = ({ 
-  label, 
-  error, 
-  isPassword = false, 
-  className, 
-  ...props 
+const CommonInput: React.FC<CommonInputProps> = ({
+  label,
+  error,
+  isPassword = false,
+  className,
+  ...props
 }) => {
   const InputComponent = isPassword ? Input.Password : Input;
 
@@ -23,7 +18,7 @@ const CommonInput: React.FC<CommonInputProps> = ({
           {label}
         </label>
       )}
-      
+
       <InputComponent
         {...(props as any)}
         className={`
@@ -31,11 +26,11 @@ const CommonInput: React.FC<CommonInputProps> = ({
           hover:border-primary/50 hover:bg-white
           focus:border-primary focus:bg-white focus:shadow-[0_0_15px_rgba(99,102,241,0.1)]
           transition-all duration-300 rounded-lg py-2.5 px-4
-          ${error ? 'border-error/50 hover:border-error focus:border-error' : ''}
-          ${className || ''}
+          ${error ? "border-error/50 hover:border-error focus:border-error" : ""}
+          ${className || ""}
         `}
       />
-      
+
       {error && (
         <span className="text-error text-xs ml-1 animate-in fade-in slide-in-from-top-1 duration-300">
           {error}

@@ -1,12 +1,4 @@
-import type { ReactNode } from "react";
-
-interface StatCardProps {
-  icon: ReactNode;
-  value: number | string;
-  label: string;
-  iconBg?: string;
-  iconColor?: string;
-}
+import type { StatCardProps } from "../types";
 
 function StatCard({ icon, value, label, iconBg, iconColor }: StatCardProps) {
   return (
@@ -18,7 +10,9 @@ function StatCard({ icon, value, label, iconBg, iconColor }: StatCardProps) {
         {icon}
       </div>
       <div>
-        <p className="text-2xl font-bold text-text-primary leading-none">{value}</p>
+        <p className="text-2xl font-bold text-text-primary leading-none">
+          {value}
+        </p>
         <p className="text-sm text-text-secondary mt-1">{label}</p>
       </div>
     </div>

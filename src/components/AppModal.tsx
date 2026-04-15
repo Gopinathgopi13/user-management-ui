@@ -1,14 +1,5 @@
 import { Modal } from "antd";
-import type { ReactNode } from "react";
-
-interface AppModalProps {
-  open: boolean;
-  title: string;
-  onClose: () => void;
-  children: ReactNode;
-  footer?: ReactNode | null;
-  width?: number;
-}
+import type { AppModalProps } from "../types";
 
 function AppModal({
   open,

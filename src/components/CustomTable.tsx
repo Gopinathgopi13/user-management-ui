@@ -1,17 +1,10 @@
 import React from "react";
 import { Table } from "antd";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
-import type { TableProps, TableColumnType } from "antd";
+import type { TableColumnType } from "antd";
+import type { CustomTableProps } from "../types";
 
 export type { TableColumnType };
-
-interface CustomTableProps<T> extends TableProps<T> {
-  total?: number;
-  pageSize?: number;
-  currentPage?: number;
-  onPageChange?: (page: number, pageSize: number) => void;
-  showPagination?: boolean;
-}
 
 function CustomTable<T extends object>({
   columns,

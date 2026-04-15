@@ -1,11 +1,6 @@
 import { Tag } from "antd";
 import AppModal from "../../components/AppModal";
-import type { User } from "../../types";
-
-interface UserDetailModalProps {
-  user: User | null;
-  onClose: () => void;
-}
+import type { UserDetailModalProps } from "../../types";
 
 function UserDetailModal({ user, onClose }: UserDetailModalProps) {
   if (!user) return null;

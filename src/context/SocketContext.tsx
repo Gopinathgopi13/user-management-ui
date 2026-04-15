@@ -2,13 +2,9 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { io, Socket } from "socket.io-client";
 import { getCookie } from "../utilities/auth";
 import { ACCESS_TOKEN } from "../utilities/constant";
+import type { SocketContextValue } from "../types";
 
 const SOCKET_URL = "http://localhost:7002";
-
-interface SocketContextValue {
-  socket: Socket | null;
-  connected: boolean;
-}
 
 const SocketContext = createContext<SocketContextValue>({
   socket: null,

@@ -1,12 +1,6 @@
 import { Input } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
-
-interface SearchInputProps {
-  value: string;
-  onChange: (value: string) => void;
-  placeholder?: string;
-  className?: string;
-}
+import type { SearchInputProps } from "../types";
 
 function SearchInput({
   value,

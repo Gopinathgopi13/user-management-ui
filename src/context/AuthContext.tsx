@@ -1,13 +1,8 @@
 import { createContext } from "react";
-import type { User } from "../types";
+import type { AuthContextValue, User } from "../types";
 import { clearAuthSession, getCookie } from "../utilities/auth";
 import { USER_DATA } from "../utilities/constant";
 
-interface AuthContextValue {
-  user: User | null;
-  hasPermission: (resource: string, action: string) => boolean;
-  logout: () => void;
-}
 
 const AuthContext = createContext<AuthContextValue | null>(null);
 
