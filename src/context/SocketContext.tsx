@@ -4,8 +4,6 @@ import { getCookie } from "../utilities/auth";
 import { ACCESS_TOKEN } from "../utilities/constant";
 import type { SocketContextValue } from "../types";
 
-const SOCKET_URL = "http://localhost:7002";
-
 const SocketContext = createContext<SocketContextValue>({
   socket: null,
   connected: false,
@@ -17,7 +15,10 @@ export function SocketProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     const token = getCookie(ACCESS_TOKEN) ?? undefined;
-    const s = io(SOCKET_URL, { transports: ["websocket"], auth: { token } });
+    const s = io(import.meta.env.VITE_SOCKET_URL, {
+      transports: ["websocket"],
+      auth: { token },
+    });
     setSocket(s);
 
     s.on("connect", () => setConnected(true));
@@ -27,7 +28,7 @@ export function SocketProvider({ children }: { children: React.ReactNode }) {
       s.disconnect();
     };
   }, []);
-
+  console.log(connected, "--> Socket Connection");
   return (
     <SocketContext.Provider value={{ socket, connected }}>
       {children}

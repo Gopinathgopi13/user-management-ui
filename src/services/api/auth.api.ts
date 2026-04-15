@@ -7,3 +7,7 @@ export const loginService = (data: { email: string, password: string }) => {
 export const logoutService = (refresh_token: string) => {
     return instance.post('/auth/logout', { refresh_token });
 }
+
+export const changePasswordService = (data: { currentPassword: string; newPassword: string }) => {
+    return instance.post('/users/change-password', data);
+}

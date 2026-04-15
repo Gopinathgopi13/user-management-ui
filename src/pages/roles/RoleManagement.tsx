@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { Button, message, Tag } from "antd";
+import { Button, message, Tag, Divider } from "antd";
+import { CheckCircleFilled, IdcardOutlined } from "@ant-design/icons";
 import { PlusOutlined } from "@ant-design/icons";
 import CustomTable from "../../components/CustomTable";
 import Spinner from "../../components/Spinner";
@@ -96,30 +97,57 @@ function RoleManagement() {
         onClose={() => setViewRole(null)}
       >
         {viewRole && (
-          <div className="space-y-4 pt-2">
-            <div>
-              <span className="text-sm text-text-secondary">Name</span>
-              <p className="font-medium text-text-primary capitalize mt-0.5">
-                {viewRole.name}
-              </p>
+          <div className="pt-2 space-y-5">
+            {/* Role name banner */}
+            <div className="flex items-center gap-3 bg-primary/5 border border-primary/20 rounded-xl px-4 py-3">
+              <div className="flex items-center justify-center w-10 h-10 rounded-full bg-primary/10 text-primary text-lg shrink-0">
+                <IdcardOutlined />
+              </div>
+              <div>
+                <p className="text-xs text-text-secondary leading-none mb-0.5">Role Name</p>
+                <p className="text-base font-semibold text-text-primary capitalize leading-tight">
+                  {viewRole.name}
+                </p>
+              </div>
             </div>
+
+            <Divider className="my-0" />
+
+            {/* Permissions */}
             <div>
-              <span className="text-sm text-text-secondary">Permissions</span>
+              <p className="text-xs font-semibold text-text-secondary uppercase tracking-wider mb-3">
+                Permissions
+              </p>
               {Object.keys(viewRole.permissions).length === 0 ? (
-                <p className="text-sm text-text-secondary mt-0.5">No permissions assigned</p>
+                <p className="text-sm text-text-secondary">No permissions assigned</p>
               ) : (
-                <div className="space-y-2 mt-1">
+                <div className="space-y-3">
                   {Object.entries(viewRole.permissions).map(([resource, actions]) => (
-                    <div key={resource} className="flex items-center gap-2">
-                      <span className="text-sm font-medium capitalize w-24 shrink-0">
+                    <div
+                      key={resource}
+                      className="flex items-center justify-between bg-gray-50 border border-border-subtle rounded-lg px-4 py-2.5"
+                    >
+                      <span className="text-sm font-medium text-text-primary capitalize">
                         {resource}
                       </span>
-                      <div className="flex gap-1 flex-wrap">
-                        {actions.map((action) => (
-                          <Tag key={action} className="capitalize">
-                            {action}
-                          </Tag>
-                        ))}
+                      <div className="flex gap-1.5 flex-wrap justify-end">
+                        {actions.map((action) => {
+                          const colorMap: Record<string, string> = {
+                            read: "blue",
+                            write: "green",
+                            delete: "red",
+                          };
+                          return (
+                            <Tag
+                              key={action}
+                              color={colorMap[action] ?? "default"}
+                              icon={<CheckCircleFilled />}
+                              className="capitalize text-xs m-0"
+                            >
+                              {action}
+                            </Tag>
+                          );
+                        })}
                       </div>
                     </div>
                   ))}

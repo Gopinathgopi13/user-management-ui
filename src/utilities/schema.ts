@@ -1,6 +1,13 @@
 import * as Yup from "yup";
 import { EMAIL_REGEX, PASSWORD_REGEX } from "./constant";
 
+export const forgotPasswordSchema = Yup.object({
+  email: Yup.string()
+    .email("Invalid email address")
+    .matches(EMAIL_REGEX, "Invalid email address")
+    .required("Email is required"),
+});
+
 export const loginSchema = Yup.object({
   email: Yup.string()
     .email("Invalid email address")
@@ -13,6 +20,20 @@ export const loginSchema = Yup.object({
       "Password must contain at least one lowercase letter, one uppercase letter, one number, and one special character",
     )
     .required("Password is required"),
+});
+
+export const changePasswordSchema = Yup.object({
+  currentPassword: Yup.string().required("Current password is required"),
+  newPassword: Yup.string()
+    .min(6, "Password must be at least 6 characters")
+    .matches(
+      PASSWORD_REGEX,
+      "Password must contain at least one lowercase letter, one uppercase letter, one number, and one special character",
+    )
+    .required("New password is required"),
+  confirmPassword: Yup.string()
+    .oneOf([Yup.ref("newPassword")], "Passwords do not match")
+    .required("Please confirm your new password"),
 });
 
 export const createUserSchema = Yup.object({

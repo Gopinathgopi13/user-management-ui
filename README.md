@@ -1,75 +1,76 @@
-# React + TypeScript + Vite
+# User Micro — UI
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Frontend for the User Management Admin Panel, built with React 19, TypeScript, Vite, Ant Design, and Tailwind CSS.
 
-Currently, two official plugins are available:
+## Prerequisites
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **Node.js** v18 or later
+- **npm** v9 or later (or pnpm / yarn)
 
-## React Compiler
+---
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+## Installation
 
-Note: This will impact Vite dev & build performances.
+```bash
+# 1. Clone the repository (if you haven't already)
+git clone https://github.com/Gopinathgopi13/user-management-ui.git
+cd user-micro/ui
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+# 2. Install dependencies
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Running the App
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Development server
+
+```bash
+npm run dev
+```
+
+The app will be available at `http://localhost:5173` by default (Vite's default port).
+
+### Production build
+
+```bash
+npm run build
+```
+
+Compiled output is written to the `dist/` directory.
+
+
+---
+
+## Tech Stack
+
+| Layer | Library / Tool |
+|---|---|
+| Framework | React 19 |
+| Language | TypeScript 6 |
+| Build tool | Vite 8 |
+| UI components | Ant Design 6 |
+| Styling | Tailwind CSS 4 |
+| Routing | React Router 7 |
+| Forms | Formik + Yup |
+| HTTP client | Axios |
+| Realtime | Socket.IO client |
+| Icons | Ant Design Icons, Lucide React |
+
+---
+
+## Project Structure
+
+```
+src/
+├── components/   # Reusable UI components
+├── context/      # React context providers
+├── hooks/        # Custom React hooks
+├── layouts/      # Page layout wrappers
+├── pages/        # Route-level page components
+├── routes/       # Route definitions
+├── services/     # API service layer (Axios)
+├── types/        # TypeScript type definitions
+└── utilities/    # Helper functions
 ```

@@ -17,8 +17,8 @@ const Login: React.FC = () => {
       password: "",
     },
     validationSchema: loginSchema,
-    onSubmit: (values) => {
-      handleLogin(values);
+    onSubmit: async (values) => {
+      await handleLogin(values);
     },
   });
 
@@ -91,15 +91,6 @@ const Login: React.FC = () => {
             }
             prefix={<LockOutlined className="text-text-secondary mr-2" />}
           />
-
-          <div className="flex items-center justify-end">
-            <a
-              href="#"
-              className="text-sm font-medium text-primary hover:text-primary/80 transition-colors"
-            >
-              Forgot password?
-            </a>
-          </div>
 
           <Button
             type="primary"

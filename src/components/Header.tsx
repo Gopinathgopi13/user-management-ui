@@ -1,4 +1,9 @@
-import { DownOutlined, LogoutOutlined, UserOutlined } from "@ant-design/icons";
+import {
+  DownOutlined,
+  KeyOutlined,
+  LogoutOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
 import { Dropdown, message } from "antd";
 import type { MenuProps } from "antd";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -8,6 +13,7 @@ import { REFRESH_TOKEN } from "../utilities/constant";
 import { useAuth } from "../hooks/useAuth";
 import { useState } from "react";
 import Spinner from "./Spinner";
+import ResetPasswordModal from "./ResetPasswordModal";
 
 const routeTitles: Record<string, { title: string; description: string }> = {
   "/dashboard": { title: "Dashboard", description: "" },
@@ -20,6 +26,7 @@ function Header() {
   const navigate = useNavigate();
   const page = routeTitles[pathname];
   const [loading, setLoading] = useState(false);
+  const [resetModalOpen, setResetModalOpen] = useState(false);
   const { user } = useAuth();
 
   const handleLogout = async () => {
@@ -42,6 +49,12 @@ function Header() {
   };
 
   const userMenuItems: MenuProps["items"] = [
+    {
+      key: "reset-password",
+      icon: <KeyOutlined />,
+      label: "Reset Password",
+      onClick: () => setResetModalOpen(true),
+    },
     {
       key: "logout",
       icon: <LogoutOutlined />,
@@ -85,6 +98,11 @@ function Header() {
           </Dropdown>
         </div>
       </header>
+
+      <ResetPasswordModal
+        open={resetModalOpen}
+        onClose={() => setResetModalOpen(false)}
+      />
     </>
   );
 }
