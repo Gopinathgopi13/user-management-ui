@@ -32,6 +32,15 @@ npm run dev
 
 The app will be available at `http://localhost:5173` by default (Vite's default port).
 
+### Demo login credentials
+
+Before using these credentials, make sure `user-service` seed data has been inserted.
+
+- Email: `admin@example.com`
+- Password: `@admin@example.com`
+
+
+
 ### Production build
 
 ```bash
@@ -74,3 +83,4 @@ src/
 ├── types/        # TypeScript type definitions
 └── utilities/    # Helper functions
 ```
+
