@@ -9,9 +9,8 @@ import {
 import StatCard from "../../components/StatCard";
 import Spinner from "../../components/Spinner";
 import { getUsers, getUserStats } from "../../services/api/users.api";
-import type { UserStats } from "../../services/api/users.api";
 import CustomTable from "../../components/CustomTable";
-import type { User } from "../../types";
+import type { User, UserStats } from "../../types";
 import { columns } from "./columns";
 import { message } from "antd";
 
@@ -111,8 +110,8 @@ function Dashboard() {
   ];
 
   return (
-    <div className="space-y-6">
-      {loading && <Spinner isLoading={loading} />}
+    <div className="relative space-y-6">
+      {loading && <Spinner isLoading={loading} fullscreen={false} />}
       <div className="flex gap-4">
         {statCards.map((stat) => (
           <StatCard key={stat.label} {...stat} />

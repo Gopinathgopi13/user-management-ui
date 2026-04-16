@@ -89,6 +89,7 @@ function RoleForm({ role, onSuccess, onClose }: RoleFormProps) {
       name: isEdit ? role.name : "",
       permissions: initialPermissions,
     },
+    enableReinitialize: true,
     validationSchema: isEdit ? updateRoleSchema : createRoleSchema,
     onSubmit: async (vals) => {
       if (isEdit) {

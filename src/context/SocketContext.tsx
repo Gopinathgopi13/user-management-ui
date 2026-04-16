@@ -28,7 +28,6 @@ export function SocketProvider({ children }: { children: React.ReactNode }) {
       s.disconnect();
     };
   }, []);
-  console.log(connected, "--> Socket Connection");
   return (
     <SocketContext.Provider value={{ socket, connected }}>
       {children}

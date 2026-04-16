@@ -11,3 +11,11 @@ export const logoutService = (refresh_token: string) => {
 export const changePasswordService = (data: { currentPassword: string; newPassword: string }) => {
     return instance.post('/users/change-password', data);
 }
+
+export const forgotPasswordService = (data: { email: string }) => {
+    return instance.post('/auth/forgot-password', data);
+}
+
+export const verifyOtpService = (data: { email: string; otp: string }) => {
+    return instance.post('/auth/verify-otp', data);
+}

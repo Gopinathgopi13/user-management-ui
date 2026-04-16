@@ -7,8 +7,6 @@ export const setAuthSession = ({
   refresh_token,
   user,
 }: AuthSessionData) => {
-  console.log(access_token, refresh_token);
-  console.log(user, "User data being set in cookies");
   Cookies.set(ACCESS_TOKEN, access_token, { expires: 7 });
   Cookies.set(REFRESH_TOKEN, refresh_token, { expires: 7 });
   Cookies.set(USER_DATA, JSON.stringify(user), { expires: 7 });

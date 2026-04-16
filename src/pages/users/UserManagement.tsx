@@ -28,7 +28,8 @@ function UserManagement() {
   const [deleting, setDeleting] = useState(false);
 
   const { hasPermission } = useAuth();
-  const canWrite = hasPermission("users", "write");
+  const canCreate = hasPermission("users", "create");
+  const canUpdate = hasPermission("users", "update");
   const canDelete = hasPermission("users", "delete");
 
   const { socket } = useSocket();
@@ -143,9 +144,9 @@ function UserManagement() {
   };
 
   return (
-    <div className="space-y-4">
+    <div className="relative space-y-4">
       {notifContextHolder}
-      {loading && <Spinner isLoading={loading} />}
+      {loading && <Spinner isLoading={loading} fullscreen={false} />}
 
       <div className="flex items-center justify-between gap-3">
         <div className="flex items-center gap-3">
@@ -164,7 +165,7 @@ function UserManagement() {
           />
         </div>
 
-        {canWrite && (
+        {canCreate && (
           <Button
             type="primary"
             icon={<PlusOutlined />}
@@ -178,7 +179,7 @@ function UserManagement() {
 
       <div className="bg-white rounded-xl border border-border-subtle shadow-sm p-4">
         <CustomTable<User>
-          columns={columns(handleView, handleEdit, handleDeleteClick, canWrite, canDelete)}
+          columns={columns(handleView, handleEdit, handleDeleteClick, canUpdate, canDelete)}
           dataSource={users}
           rowKey="id"
           total={pagination.total}

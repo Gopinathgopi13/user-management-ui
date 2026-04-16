@@ -13,7 +13,8 @@ import { useAuth } from "../../hooks/useAuth";
 
 function RoleManagement() {
   const { hasPermission } = useAuth();
-  const canWrite = hasPermission("roles", "write");
+  const canCreate = hasPermission("roles", "create");
+  const canUpdate = hasPermission("roles", "update");
   const canDelete = hasPermission("roles", "delete");
 
   const [roles, setRoles] = useState<UserRole[]>([]);
@@ -52,11 +53,11 @@ function RoleManagement() {
   };
 
   return (
-    <div className="space-y-4">
-      {loading && <Spinner isLoading={loading} />}
+    <div className="relative space-y-4">
+      {loading && <Spinner isLoading={loading} fullscreen={false} />}
 
       <div className="flex items-center justify-end">
-        {canWrite && (
+        {canCreate && (
           <Button
             type="primary"
             icon={<PlusOutlined />}
@@ -84,11 +85,14 @@ function RoleManagement() {
         title="Edit Role"
         onClose={() => setEditRole(null)}
       >
-        <RoleForm
-          role={editRole}
-          onClose={() => setEditRole(null)}
-          onSuccess={fetchRoles}
-        />
+        {editRole && (
+          <RoleForm
+            key={editRole.id}
+            role={editRole}
+            onClose={() => setEditRole(null)}
+            onSuccess={fetchRoles}
+          />
+        )}
       </AppModal>
 
       <AppModal
@@ -134,7 +138,8 @@ function RoleManagement() {
                         {actions.map((action) => {
                           const colorMap: Record<string, string> = {
                             read: "blue",
-                            write: "green",
+                            create: "green",
+                            update: "gold",
                             delete: "red",
                           };
                           return (
@@ -160,7 +165,7 @@ function RoleManagement() {
 
       <div className="bg-white rounded-xl border border-border-subtle shadow-sm p-4">
         <CustomTable<UserRole>
-          columns={columns(handleEdit, handleView, handleDelete, canWrite, canDelete)}
+          columns={columns(handleEdit, handleView, handleDelete, canUpdate, canDelete)}
           dataSource={roles}
           rowKey="id"
           showPagination={false}

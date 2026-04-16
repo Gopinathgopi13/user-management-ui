@@ -11,4 +11,4 @@ export const STATUS_OPTIONS = [
   { label: "Inactive", value: "inactive" },
 ];
 
-export const AVAILABLE_ACTIONS = ["read", "write", "delete"];
+export const AVAILABLE_ACTIONS = ["read", "create", "update", "delete"];

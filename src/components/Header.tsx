@@ -16,9 +16,18 @@ import Spinner from "./Spinner";
 import ResetPasswordModal from "./ResetPasswordModal";
 
 const routeTitles: Record<string, { title: string; description: string }> = {
-  "/dashboard": { title: "Dashboard", description: "" },
-  "/users": { title: "Users", description: "Manage users" },
-  "/roles": { title: "Roles", description: "Manage roles" },
+  "/dashboard": {
+    title: "Dashboard",
+    description: "Overview of system metrics and recent activity."
+  },
+  "/users": {
+    title: "Users",
+    description: "Manage user accounts and their access."
+  },
+  "/roles": {
+    title: "Roles",
+    description: "Configure roles and permissions."
+  },
 };
 
 function Header() {
@@ -67,34 +76,39 @@ function Header() {
   return (
     <>
       {loading && <Spinner isLoading={loading} />}
-      <header className="flex items-center justify-between h-16 px-6 bg-white border-b border-border-subtle shrink-0">
-        <div>
-          <h1 className="text-base font-semibold text-text-primary">
-            {page?.title}
-          </h1>
-          <p className="text-sm text-text-secondary">{page?.description}</p>
-        </div>
+      <header className="sticky top-0 z-20 mx-6 my-4 shrink-0 rounded-2xl border border-border-subtle bg-surface/80 shadow-sm backdrop-blur-sm">
+        <div className="flex min-h-20 items-center justify-between px-6 py-4">
+          <div className="min-w-0">
+            <h1 className="truncate text-xl font-semibold text-text-primary">
+              {page?.title ?? "Admin Panel"}
+            </h1>
+            <p className="truncate text-sm text-text-secondary">
+              {page?.description}
+            </p>
+          </div>
 
-        <div className="flex items-center gap-4">
           <Dropdown
             menu={{ items: userMenuItems }}
             trigger={["click"]}
             placement="bottomRight"
           >
-            <div className="flex items-center gap-2 cursor-pointer select-none">
-              <div className="flex items-center justify-center w-9 h-9 rounded-full bg-primary text-white text-sm font-semibold">
+            <button
+              type="button"
+              className="group flex items-center gap-3 rounded-xl border border-border-subtle bg-white px-3 py-2 text-left shadow-sm transition-all hover:border-primary/30 hover:shadow-md"
+            >
+              <div className="grid h-9 w-9 place-items-center rounded-lg bg-primary text-sm font-semibold text-white">
                 <UserOutlined />
               </div>
-              <div className="leading-tight">
-                <p className="text-sm font-medium text-text-primary">
+              <div className="min-w-0 leading-tight">
+                <p className="truncate text-sm font-semibold text-text-primary">
                   {user?.name ?? "User"}
                 </p>
-                <p className="text-xs text-text-secondary capitalize">
-                  {user?.role?.name ?? ""}
+                <p className="truncate text-xs capitalize text-text-secondary">
+                  {user?.role?.name ?? "Member"}
                 </p>
               </div>
-              <DownOutlined className="text-xs text-text-secondary ml-1" />
-            </div>
+              <DownOutlined className="text-[11px] text-text-secondary transition-transform group-hover:translate-y-[1px]" />
+            </button>
           </Dropdown>
         </div>
       </header>

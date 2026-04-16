@@ -51,7 +51,8 @@ function UserDetailModal({ user, onClose }: UserDetailModalProps) {
 
   const actionColors: Record<string, string> = {
     read: "green",
-    write: "blue",
+    create: "blue",
+    update: "gold",
     delete: "red",
   };
 
